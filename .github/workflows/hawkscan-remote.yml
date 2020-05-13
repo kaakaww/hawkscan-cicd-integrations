@@ -28,5 +28,5 @@ jobs:
           --env APP_ID="${APP_ID}"
           --env ENV="${ENV}"
           --env HOST="${HOST}"
-          --env NO_COLOR=true
+#          --env NO_COLOR=true
           stackhawk/hawkscan
