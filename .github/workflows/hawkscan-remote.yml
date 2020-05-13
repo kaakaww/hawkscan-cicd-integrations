@@ -2,12 +2,12 @@ name: HawkScan Remote
 
 on:
   push:
-#    branches:
-#      - master
-#      - github/*
+    branches:
+      - master
+      - github/*
   pull_request:
-#    branches:
-#      - master
+    branches:
+      - master
 
 jobs:
   hawkscan:
@@ -28,5 +28,4 @@ jobs:
           --env APP_ID="${APP_ID}"
           --env ENV="${ENV}"
           --env HOST="${HOST}"
-          --env NO_COLOR=true
           stackhawk/hawkscan
