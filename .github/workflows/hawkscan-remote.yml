@@ -1,0 +1,32 @@
+name: HawkScan Remote
+
+on:
+  push:
+#    branches:
+#      - master
+#      - github/*
+  pull_request:
+#    branches:
+#      - master
+
+jobs:
+  hawkscan:
+    name: HawkScan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+      - name: Run HawkScan
+        env:
+          API_KEY: ${{secrets.HAWK_API_KEY}}
+          APP_ID: 60da5698-41b5-466c-aa2f-cc9c0e411347
+          ENV: Development
+          HOST: http://example.com
+        run: >
+          docker run --volume $(pwd):/hawk --tty
+          --env API_KEY="${API_KEY}"
+          --env APP_ID="${APP_ID}"
+          --env ENV="${ENV}"
+          --env HOST="${HOST}"
+          --env NO_COLOR=true
+          stackhawk/hawkscan

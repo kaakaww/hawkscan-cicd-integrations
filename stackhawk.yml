@@ -1,0 +1,8 @@
+app:
+  applicationId: ${APP_ID}
+  host: ${HOST}
+  env: ${ENV:Develop}
+
+hawk:
+  spider:
+    base: false
