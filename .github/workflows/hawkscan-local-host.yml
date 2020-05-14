@@ -22,7 +22,7 @@ jobs:
       - name: Run HawkScan
         env:
           API_KEY: ${{secrets.HAWK_API_KEY}}
-          APP_ID: 5b58fae0-2285-48dd-9e3a-ce9744f0e5ab
+          APP_ID: 3a2657d3-cf1d-4e7f-840a-4a43f195a1cc
           HOST: http://127.0.0.1
         run: >
           docker run --volume $(pwd):/hawk --tty
