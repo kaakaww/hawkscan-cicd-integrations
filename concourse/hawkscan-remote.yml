@@ -1,0 +1,45 @@
+---
+resources:
+  - name: hawkscan-cicd-integrations
+    type: git
+    icon: github-circle
+    check_every: 15s
+    source:
+      uri: git@github.com:stackhawk/hawkscan-cicd-integrations
+      branch: concourse/*
+      private_key: |
+        ((hawksecrets.ssh_privatekey))
+  - name: stackhawk
+    type: docker-image
+    icon: docker
+    source:
+      repository: stackhawk/hawkscan
+      tag: latest
+jobs:
+  - name: run-stackhawk-staging
+    plan:
+      - in_parallel:
+          - get: hawkscan-cicd-integrations
+            trigger: true
+          - get: stackhawk
+      - task: run-tests
+#        privileged: true
+        image: stackhawk
+        config:
+          platform: linux
+          inputs:
+            - name: hawkscan-cicd-integrations
+          params:
+            API_KEY: ((hawksecrets.hawk_api_key))
+            REPO_DIR: /home/zap/hawk
+            APP_ID: a313a625-f4f0-4f04-800f-d7849a36a2bb
+            HOST: http://example.com
+          run:
+            path: bash
+            args:
+              - -exc
+              - |
+                mkdir /home/zap/hawk
+                cp hawkscan-cicd-integrations/stackhawk.yml /home/zap/hawk
+                cd /home/zap/hawk
+                shawk
