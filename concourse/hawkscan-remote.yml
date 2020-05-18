@@ -8,7 +8,7 @@ resources:
       uri: git@github.com:stackhawk/hawkscan-cicd-integrations
       branch: concourse/*
       private_key: |
-        ((hawksecrets.ssh_privatekey))
+        ((ssh_private_key))
   - name: stackhawk
     type: docker-image
     icon: docker
@@ -30,7 +30,7 @@ jobs:
           inputs:
             - name: hawkscan-cicd-integrations
           params:
-            API_KEY: ((hawksecrets.hawk_api_key))
+            API_KEY: ((hawk_api_key))
             REPO_DIR: /home/zap/hawk
             APP_ID: a313a625-f4f0-4f04-800f-d7849a36a2bb
             HOST: http://example.com
