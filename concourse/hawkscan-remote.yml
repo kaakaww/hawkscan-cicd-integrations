@@ -41,7 +41,7 @@ jobs:
             APP_ID: a313a625-f4f0-4f04-800f-d7849a36a2bb
             HOST: http://example.com
           run:
-            path: bash
+            path: sh
             args:
               - -exc
               - |
