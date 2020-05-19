@@ -18,7 +18,7 @@ resources:
     type: docker-image
     icon: docker
     source:
-      repository: docker/compose
+      repository: karlkfi/concourse-dcind
       tag: latest
 
 jobs:
@@ -68,9 +68,12 @@ jobs:
             APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
             HOST: http://nginx_test
           run:
-            path: sh
+            path: entrypoint.sh
             args:
-              - -exc
+              - bash
+              - -ceux
               - |
-                cp -rp hawkscan-cicd-integrations/ ./
+                cd hawkscan-cicd-integrations
                 docker-compose up --abort-on-container-exit
+                docker-compose down
+                docker volume rm $(docker volume ls -q)
