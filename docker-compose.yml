@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  # Fire up the app to test, nginx_test
+  nginx_test:
+    image: nginx
+    networks:
+      - scan_net
+
+  # Fire up hawkscan and scan the test app (nginx_test)
+  hawkscan:
+    image: stackhawk/hawkscan:latest
+    environment:
+      HOST: http://nginx_test
+      API_KEY: ${Z_API_KEY}
+      APP_ID: ${Z_APP_ID}
+    volumes:
+      - type: bind
+        source: .
+        target: /hawk
+    tty: true
+    networks:
+      - scan_net
+    depends_on:
+      - nginx_test
+
+networks:
+  # Make a network to test hawkscan against the app
+  scan_net:
+    name: scan_net

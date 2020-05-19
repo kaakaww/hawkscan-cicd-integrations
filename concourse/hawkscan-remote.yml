@@ -7,22 +7,28 @@ resources:
     source:
       uri: git@github.com:stackhawk/hawkscan-cicd-integrations
       branch: concourse/initial-tests
-      private_key: |
-        ((ssh_private_key))
+      private_key: ((ssh_private_key))
   - name: stackhawk
     type: docker-image
     icon: docker
     source:
       repository: stackhawk/hawkscan
       tag: latest
+  - name: docker-compose
+    type: docker-image
+    icon: docker
+    source:
+      repository: docker/compose
+      tag: latest
+
 jobs:
-  - name: run-stackhawk-staging
+  - name: hawkscan-remote
     plan:
       - in_parallel:
           - get: hawkscan-cicd-integrations
             trigger: true
           - get: stackhawk
-      - task: run-tests
+      - task: scan-remote
 #        privileged: true
         image: stackhawk
         config:
@@ -43,3 +49,24 @@ jobs:
                 cp hawkscan-cicd-integrations/stackhawk.yml /home/zap/hawk
                 cd /home/zap/hawk
                 shawk
+
+  - name: hawkscan-local
+    plan:
+      - in_parallel:
+          - get: hawkscan-cicd-integrations
+            trigger: true
+          - get: docker-compose
+      - task: scan-local
+        privileged: true
+        image: docker-compose
+        config:
+          platform: linux
+          inputs:
+            - name: hawkscan-cicd-integrations
+          params:
+            API_KEY: ((hawk_api_key))
+            APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
+            HOST: http://nginx_test
+          run:
+            path: docker-compose
+            args: ["up", "--abort-on-container-exit"]
