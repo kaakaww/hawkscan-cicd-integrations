@@ -76,4 +76,3 @@ jobs:
                 cd hawkscan-cicd-integrations
                 docker-compose up --abort-on-container-exit
                 docker-compose down
-                docker volume rm $(docker volume ls -q)
