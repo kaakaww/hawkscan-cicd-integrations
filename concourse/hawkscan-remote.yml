@@ -68,5 +68,9 @@ jobs:
             APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
             HOST: http://nginx_test
           run:
-            path: docker-compose
-            args: ["up", "--abort-on-container-exit"]
+            path: bash
+            args:
+              - -exc
+              - |
+                cp -rp hawkscan-cicd-integrations/ ./
+                docker-compose up --abort-on-container-exit
