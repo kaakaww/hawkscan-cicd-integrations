@@ -41,7 +41,7 @@ jobs:
             APP_ID: a313a625-f4f0-4f04-800f-d7849a36a2bb
             HOST: http://example.com
           run:
-            path: sh
+            path: bash
             args:
               - -exc
               - |
@@ -68,7 +68,7 @@ jobs:
             APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
             HOST: http://nginx_test
           run:
-            path: bash
+            path: sh
             args:
               - -exc
               - |
