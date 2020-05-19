@@ -27,4 +27,3 @@ services:
 networks:
   # Make a network to test hawkscan against the app
   scan_net:
-    name: scan_net
