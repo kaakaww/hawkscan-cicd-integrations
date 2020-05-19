@@ -6,7 +6,7 @@ resources:
     check_every: 15s
     source:
       uri: git@github.com:stackhawk/hawkscan-cicd-integrations
-      branch: concourse/initial-tests
+      branch: concourse
       private_key: ((ssh_private_key))
   - name: stackhawk
     type: docker-image
