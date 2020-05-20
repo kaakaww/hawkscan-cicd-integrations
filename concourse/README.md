@@ -2,6 +2,8 @@
 
 This directory contains two Concourse CI simple test pipelines, `hawkscan-remote.yml`, and `hawkscan-local.yml`. They each require two secrets, `hawk_api_key`, and `ssh_private_key`.
 
+**NOTE:** This test uses the `concourse` branch of this repository! Be sure to push any changes you want to see to that branch.
+
 ## Test Setup
 
 You can use a simple Docker Compose test environment, or a more complete BUCC environment to test the Concourse pipelines in this directory.
@@ -14,9 +16,6 @@ Here is a sample run that should get you going. This walkthrough assumes your Gi
 
 ```shell
 zconger@rey concourse % docker-compose --file docker-compose-concourse-environment.yml up --detach 
-Creating network "concourse_default" with the default driver
-Creating concourse_concourse-db_1 ... done
-Creating concourse_concourse_1    ... done
 ```
 
 Now browse to http://127.0.0.1:8080/ to install the Concourse CLI, `fly`. Then:
@@ -28,6 +27,12 @@ fly --target kaakaw set-pipeline --pipeline hawkscan-local --config hawkscan-loc
 ```
 
 Now log on to the web console at http://127.0.0.1:8080/ and login with username `admin` and password `admin`.
+
+To shut the environment down:
+
+```shell
+docker-compose down
+```
 
 ### BUCC
 
@@ -76,4 +81,10 @@ Concourse:
   url: https://192.168.50.6
   username: admin
   password: yostmf7c6fijyrtvqfpi
+```
+
+To shut the environment down:
+
+```shell
+bucc down
 ```
