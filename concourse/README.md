@@ -2,7 +2,7 @@
 
 This directory contains two Concourse CI simple test pipelines, `hawkscan-remote.yml`, and `hawkscan-local.yml`. They each require two secrets, `hawk_api_key`, and `ssh_private_key`.
 
-**NOTE:** This test uses the `concourse` branch of this repository! Be sure to push any changes you want to see to that branch.
+**NOTE: This test uses the `concourse` branch of this repository! Be sure to push any changes you want to see to that branch.**
 
 ## Test Setup
 
