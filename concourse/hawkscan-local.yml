@@ -9,37 +9,37 @@ resources:
       branch: concourse
       private_key: ((ssh_private_key))
 
-  - name: stackhawk
+  - name: docker-compose
     type: docker-image
-    icon: eye
+    icon: docker
     source:
-      repository: stackhawk/hawkscan
+      repository: karlkfi/concourse-dcind
       tag: latest
 
 jobs:
-  - name: hawkscan-remote
+  - name: hawkscan-local
     plan:
       - in_parallel:
           - get: hawkscan-cicd-integrations
             trigger: true
-          - get: stackhawk
-      - task: scan-remote
-        image: stackhawk
+          - get: docker-compose
+      - task: scan-local
+        privileged: true
+        image: docker-compose
         config:
           platform: linux
           inputs:
             - name: hawkscan-cicd-integrations
           params:
             API_KEY: ((hawk_api_key))
-            REPO_DIR: /home/zap/hawk
-            APP_ID: a313a625-f4f0-4f04-800f-d7849a36a2bb
-            HOST: http://example.com
+            APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
+            HOST: http://nginx_test
           run:
-            path: bash
+            path: entrypoint.sh
             args:
-              - -exc
+              - bash
+              - -ceux
               - |
-                mkdir /home/zap/hawk
-                cp hawkscan-cicd-integrations/stackhawk.yml /home/zap/hawk
-                cd /home/zap/hawk
-                shawk
+                cd hawkscan-cicd-integrations
+                docker-compose up --abort-on-container-exit
+                docker-compose down
