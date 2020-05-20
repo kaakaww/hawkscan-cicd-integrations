@@ -6,7 +6,7 @@ This directory contains two Concourse CI simple test pipelines, `hawkscan-remote
 
 ## Test Setup
 
-You can use a simple Docker Compose test environment, or a more complete BUCC environment to test the Concourse pipelines in this directory.
+You can use a simple [Docker Compose](#docker-compose) test environment, or a more complete [BUCC](#bucc) environment to test the Concourse pipelines in this directory.
 
 ### Docker Compose
 
