@@ -1,6 +1,6 @@
 ---
 resources:
-  - name: hawkscan-cicd-integrations
+  - name: example-repo
     type: git
     icon: github-circle
     check_every: 15s
@@ -20,7 +20,7 @@ jobs:
   - name: hawkscan-remote
     plan:
       - in_parallel:
-          - get: hawkscan-cicd-integrations
+          - get: example-repo
             trigger: true
           - get: stackhawk
       - task: scan-remote
@@ -28,10 +28,10 @@ jobs:
         config:
           platform: linux
           inputs:
-            - name: hawkscan-cicd-integrations
+            - name: example-repo
           params:
             API_KEY: ((hawk_api_key))
-            REPO_DIR: /home/zap/hawk
+            REPO_DIR: /home/zap/example-repo
             APP_ID: a313a625-f4f0-4f04-800f-d7849a36a2bb
             HOST: http://example.com
           run:
@@ -39,7 +39,6 @@ jobs:
             args:
               - -exc
               - |
-                mkdir /home/zap/hawk
-                cp hawkscan-cicd-integrations/stackhawk.yml /home/zap/hawk
-                cd /home/zap/hawk
+                cp -rp example-repo "${REPO_DIR}"
+                cd "${REPO_DIR}"
                 shawk

@@ -2,17 +2,17 @@
 
 This directory contains two Concourse CI simple test pipelines, `hawkscan-remote.yml`, and `hawkscan-local.yml`. They each require two secrets, `hawk_api_key`, and `ssh_private_key`.
 
-**NOTE:** This test uses the `concourse` branch of this repository! Be sure to push any changes you want to see to that branch.
+**NOTE: This test uses the `concourse` branch of this repository! Be sure to push any changes you want to see to that branch.**
 
 ## Test Setup
 
-You can use a simple Docker Compose test environment, or a more complete BUCC environment to test the Concourse pipelines in this directory.
+You can use a simple [Docker Compose](#docker-compose) test environment, or a more complete [BUCC](#bucc) environment to test the Concourse pipelines in this directory.
 
 ### Docker Compose
 
 For a simple test of these pipelines, you can use the `docker-compose-concourse-environment.yml` configuration found in this directory to stand up Concourse and a Postgres DB. This has no credential store, so you can provide secrets as parameters when you set up the pipelines from the `fly` CLI.
 
-Here is a sample run that should get you going. This walkthrough assumes your Git SSH key is saved at `~/.ssh/id_rsa`, and your StackHawk API key is save as an environment variable `HAWK_API_KEY`.
+Here is a sample run that should get you going. This walkthrough assumes your Git SSH key is saved at `~/.ssh/id_rsa`, and your StackHawk API key is saved as an environment variable `HAWK_API_KEY`.
 
 ```shell
 zconger@rey concourse % docker-compose --file docker-compose-concourse-environment.yml up --detach 

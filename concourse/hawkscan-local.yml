@@ -1,6 +1,6 @@
 ---
 resources:
-  - name: hawkscan-cicd-integrations
+  - name: example-repo
     type: git
     icon: github-circle
     check_every: 15s
@@ -20,7 +20,7 @@ jobs:
   - name: hawkscan-local
     plan:
       - in_parallel:
-          - get: hawkscan-cicd-integrations
+          - get: example-repo
             trigger: true
           - get: docker-compose
       - task: scan-local
@@ -29,9 +29,9 @@ jobs:
         config:
           platform: linux
           inputs:
-            - name: hawkscan-cicd-integrations
+            - name: example-repo
           params:
-            API_KEY: ((hawk_api_key))
+            HAWK_API_KEY: ((hawk_api_key))
             APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
             HOST: http://nginx_test
           run:
@@ -40,6 +40,6 @@ jobs:
               - bash
               - -ceux
               - |
-                cd hawkscan-cicd-integrations
+                cd example-repo
                 docker-compose up --abort-on-container-exit
                 docker-compose down
