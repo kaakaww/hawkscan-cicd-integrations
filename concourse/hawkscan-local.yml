@@ -31,7 +31,7 @@ jobs:
           inputs:
             - name: example-repo
           params:
-            API_KEY: ((hawk_api_key))
+            HAWK_API_KEY: ((hawk_api_key))
             APP_ID: 81368fba-b69d-4766-9994-cb27a3b5b238
             HOST: http://nginx_test
           run:

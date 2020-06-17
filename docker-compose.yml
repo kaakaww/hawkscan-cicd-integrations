@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.2"
 
 services:
   # Fire up the app to test, nginx_test
@@ -9,11 +9,12 @@ services:
 
   # Fire up hawkscan and scan the test app (nginx_test)
   hawkscan:
-    image: stackhawk/hawkscan:latest
+    image: stackhawk/hawkscan
     environment:
-      HOST: http://nginx_test
-      API_KEY: ${API_KEY}
-      APP_ID: ${APP_ID}
+      API_KEY: "${HAWK_API_KEY}"
+      APP_ID: "${APP_ID}"
+      HOST: "${APP_HOST:-http://nginx_test}"
+      ENV: "${APP_ENV:-Develop}"
     volumes:
       - type: bind
         source: .
@@ -24,6 +25,6 @@ services:
     depends_on:
       - nginx_test
 
+# Make a network to run hawkscan against the app
 networks:
-  # Make a network to test hawkscan against the app
   scan_net:
