@@ -40,33 +40,20 @@ jobs:
         env:
           HAWK_API_KEY: $(HAWK_API_KEY)
 
-#
-#    - name: Remote Scan
-#      env:
-#        - APP_ID='88d8c7dc-bd14-41e7-9e92-e87483871ea9'
-#        - APP_HOST='http://example.com'
-#      before_install:
-#        - docker run -d -p 80:80 nginx
-#      script: >
-#        docker run --volume $(pwd):/hawk:rw --tty
-#        --env API_KEY="${HAWK_API_KEY}"
-#        --env APP_ID="${APP_ID}"
-#        --env HOST="${APP_HOST}"
-#        --env ENV="${APP_ENV}"
-#        --env NO_COLOR=true
-#        stackhawk/hawkscan
-#
-#    - name: Localhost Scan
-#      env:
-#        - APP_ID='f2e3301b-3cd9-4df7-87cc-74465cebde92'
-#        - APP_HOST='http://127.0.0.1'
-#      before_install:
-#        - docker run -d -p 80:80 nginx
-#      script: >
-#        docker run --volume $(pwd):/hawk:rw --tty --network host
-#        --env API_KEY="${HAWK_API_KEY}"
-#        --env APP_ID="${APP_ID}"
-#        --env HOST="${APP_HOST}"
-#        --env ENV="${APP_ENV}"
-#        --env NO_COLOR=true
-#        stackhawk/hawkscan
+  - job: Local_Scan
+    variables:
+      APP_ID: f2e3301b-3cd9-4df7-87cc-74465cebde92
+      APP_HOST: http://127.0.0.1
+    steps:
+      - script: docker run -d -p 80:80 nginx
+        displayName: Start Nginx
+      - script: >
+          docker run --volume $(pwd):/hawk:rw --tty --network host
+          --env API_KEY="${HAWK_API_KEY}"
+          --env APP_ID="${APP_ID}"
+          --env HOST="${APP_HOST}"
+          --env ENV="${APP_ENV}"
+          stackhawk/hawkscan
+        displayName: Run HawkScan
+        env:
+          HAWK_API_KEY: $(HAWK_API_KEY)
