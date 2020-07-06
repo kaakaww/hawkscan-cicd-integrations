@@ -14,15 +14,6 @@ variables:
   APP_ENV: Azure Pipelines
 
 jobs:
-  - job: Hello_Azure
-    steps:
-      - script: docker version
-        displayName: 'Show the Docker version'
-      - script: docker-compose version
-        displayName: 'Show the Docker Compose version'
-      - script: env
-        displayName: 'Dump environment variables'
-
   - job: Docker_Compose_Scan
     variables:
       APP_ID: 3d974920-42c5-4337-a9b7-fad5fc660100
@@ -33,14 +24,22 @@ jobs:
         env:
           HAWK_API_KEY: $(HAWK_API_KEY)
 
-#
-#  include:
-#    - stage: hawkscan
-#      name: Docker Compose Scan
-#      env:
-#        - APP_ID='3d974920-42c5-4337-a9b7-fad5fc660100'
-#        - APP_HOST='http://nginx_test'
-#      script: docker-compose up --abort-on-container-exit
+  - job: Remote_Scan
+    variables:
+      APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+      APP_HOST: http://example.com
+    steps:
+      - script: >
+          docker run --volume $(pwd):/hawk:rw --tty
+          --env API_KEY="${HAWK_API_KEY}"
+          --env APP_ID="${APP_ID}"
+          --env HOST="${APP_HOST}"
+          --env ENV="${APP_ENV}"
+          stackhawk/hawkscan
+        displayName: Run HawkScan
+        env:
+          HAWK_API_KEY: $(HAWK_API_KEY)
+
 #
 #    - name: Remote Scan
 #      env:
