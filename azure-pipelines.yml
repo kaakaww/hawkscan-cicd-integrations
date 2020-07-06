@@ -4,17 +4,18 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 - azure*
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: docker version
+  displayName: 'Show the Docker version'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- script: docker-compose version
+  displayName: 'Show the Docker Compose version'
+
+- script: env
+  displayName: 'Dump environment variables'
