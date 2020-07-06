@@ -3,11 +3,11 @@ name: HawkScan Remote
 on:
   push:
     branches:
-      - master
+      - main
       - github/*
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   hawkscan:
