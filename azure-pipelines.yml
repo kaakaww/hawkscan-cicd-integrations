@@ -12,6 +12,7 @@ pool:
 
 variables:
   APP_ENV: Azure Pipelines
+  HAWK_API_KEY: ${HAWK_API_KEY}
 
 jobs:
   - job: Hello_Azure
