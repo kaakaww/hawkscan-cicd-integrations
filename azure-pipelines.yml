@@ -12,7 +12,6 @@ pool:
 
 variables:
   APP_ENV: Azure Pipelines
-  HAWK_API_KEY: ${HAWK_API_KEY}
 
 jobs:
   - job: Hello_Azure
@@ -29,8 +28,12 @@ jobs:
       APP_ID: 3d974920-42c5-4337-a9b7-fad5fc660100
       APP_HOST: http://nginx_test
     steps:
-      - script: docker-compose up --abort-on-container-exit
+      - script: env
         displayName: Docker Compose Scan
+
+      - script: echo ${HAWK_API_KEY}
+        env:
+          HAWK_API_KEY: $(HAWK_API_KEY)
 
 #
 #  include:
