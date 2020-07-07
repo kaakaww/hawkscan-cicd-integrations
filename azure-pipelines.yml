@@ -4,17 +4,56 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 - azure*
 
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  APP_ENV: Azure Pipelines
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+  - job: Docker_Compose_Scan
+    variables:
+      APP_ID: 3d974920-42c5-4337-a9b7-fad5fc660100
+      APP_HOST: http://nginx_test
+    steps:
+      - script: docker-compose up --abort-on-container-exit
+        displayName: Docker Compose Scan
+        env:
+          HAWK_API_KEY: $(HAWK_API_KEY)
+
+  - job: Remote_Scan
+    variables:
+      APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+      APP_HOST: http://example.com
+    steps:
+      - script: >
+          docker run --volume $(pwd):/hawk:rw --tty
+          --env API_KEY="${HAWK_API_KEY}"
+          --env APP_ID="${APP_ID}"
+          --env HOST="${APP_HOST}"
+          --env ENV="${APP_ENV}"
+          stackhawk/hawkscan
+        displayName: Run HawkScan
+        env:
+          HAWK_API_KEY: $(HAWK_API_KEY)
+
+  - job: Local_Scan
+    variables:
+      APP_ID: f2e3301b-3cd9-4df7-87cc-74465cebde92
+      APP_HOST: http://127.0.0.1
+    steps:
+      - script: docker run -d -p 80:80 nginx
+        displayName: Start Nginx
+      - script: >
+          docker run --volume $(pwd):/hawk:rw --tty --network host
+          --env API_KEY="${HAWK_API_KEY}"
+          --env APP_ID="${APP_ID}"
+          --env HOST="${APP_HOST}"
+          --env ENV="${APP_ENV}"
+          stackhawk/hawkscan
+        displayName: Run HawkScan
+        env:
+          HAWK_API_KEY: $(HAWK_API_KEY)

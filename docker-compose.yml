@@ -4,8 +4,6 @@ services:
   # Fire up the app to test, nginx_test
   nginx_test:
     image: nginx
-    networks:
-      - scan_net
 
   # Fire up hawkscan and scan the test app (nginx_test)
   hawkscan:
@@ -20,11 +18,5 @@ services:
         source: .
         target: /hawk
     tty: true
-    networks:
-      - scan_net
     depends_on:
       - nginx_test
-
-# Make a network to run hawkscan against the app
-networks:
-  scan_net:
