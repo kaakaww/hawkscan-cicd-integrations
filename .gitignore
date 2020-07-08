@@ -3,3 +3,4 @@ bin/bosh
 bin/credhub
 bin/fly
 state
+secrets.yml
