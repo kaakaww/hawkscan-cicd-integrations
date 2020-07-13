@@ -23,7 +23,7 @@ roleRef:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: harness-rey-minikube-proxy
+  name: rey-proxy
   namespace: harness-delegate
 type: Opaque
 data:
@@ -65,7 +65,7 @@ spec:
           resources:
             limits:
               cpu: "1"
-              memory: "5Gi"
+              memory: "4Gi"
           readinessProbe:
             exec:
               command:
@@ -125,12 +125,12 @@ spec:
             - name: PROXY_USER
               valueFrom:
                 secretKeyRef:
-                  name: harness-rey-minikube-proxy
+                  name: rey-proxy
                   key: PROXY_USER
             - name: PROXY_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: harness-rey-minikube-proxy
+                  name: rey-proxy
                   key: PROXY_PASSWORD
             - name: POLL_FOR_TASKS
               value: "false"
