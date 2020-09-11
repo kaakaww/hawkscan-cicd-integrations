@@ -43,9 +43,9 @@ jobs:
   - job: Local_Scan
     variables:
       APP_ID: f2e3301b-3cd9-4df7-87cc-74465cebde92
-      APP_HOST: http://127.0.0.1
+      APP_HOST: http://127.0.0.1:8080
     steps:
-      - script: docker run -d -p 80:80 nginx
+      - script: docker run -d -p 8080:80 nginx
         displayName: Start Nginx
       - script: >
           docker run --volume $(pwd):/hawk:rw --tty --network host
