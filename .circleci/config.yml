@@ -61,7 +61,6 @@ workflows:
     jobs:
 #      - docker-hawkscan-example
 #      - machine-hawkscan-example
-      - orb-hawkscan-remote
       - stackhawk/hawkscan-remote:
           app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
           env: "CircleCI"
