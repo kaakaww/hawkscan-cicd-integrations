@@ -5,11 +5,12 @@ orbs:
 
 jobs:
   docker-hawkscan-example:
-    branches:
-      only:
-        - main
-        - /feature\/circleci.*/
-        - /circleci.*/
+    filters:
+      branches:
+        only:
+          - main
+          - /feature\/circleci.*/
+          - /circleci.*/
     docker:
       - image: docker
     environment:
@@ -36,11 +37,12 @@ jobs:
               stackhawk/hawkscan:latest
 
   machine-hawkscan-example:
-    branches:
-      only:
-        - main
-        - /feature\/circleci.*/
-        - /circleci.*/
+    filters:
+      branches:
+        only:
+          - main
+          - /feature\/circleci.*/
+          - /circleci.*/
     machine: true
     environment:
       HAWK_APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
@@ -60,11 +62,12 @@ jobs:
               stackhawk/hawkscan
 
   orb-hawkscan-remote:
-    branches:
-      only:
-        - main
-        - /feature\/circleci.*/
-        - /circleci.*/
+    filters:
+      branches:
+        only:
+          - main
+          - /feature\/circleci.*/
+          - /circleci.*/
     steps:
       - stackhawk/hawkscan-remote:
           app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
@@ -72,11 +75,12 @@ jobs:
           host: http://example.com
 
   orb-hawkscan-local:
-    branches:
-      only:
-        - main
-        - /feature\/circleci.*/
-        - /circleci.*/
+    filters:
+      branches:
+        only:
+          - main
+          - /feature\/circleci.*/
+          - /circleci.*/
     steps:
       - stackhawk/hawkscan-local:
           host: http://nginx_test
@@ -94,15 +98,8 @@ jobs:
 workflows:
   hawkscan-local:
     jobs:
-      - stackhawk/hawkscan-local:
-          host: http://nginx_test
-          docker-network: scan_net
-          app-id: 3d974920-42c5-4337-a9b7-fad5fc660100
-          env: "CircleCI"
-          steps:
-            - run:
-                name: Run Local Test Instance
-                command: |
-                  docker network create scan_net
-                  docker run --rm --detach --network scan_net --name nginx_test nginx
+#      - docker-hawkscan-example
+#      - machine-hawkscan-example
+#      - orb-hawkscan-local
+      - orb-hawkscan-remote
 
