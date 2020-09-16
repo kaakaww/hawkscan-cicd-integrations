@@ -50,28 +50,6 @@ jobs:
               --env ENV=${HAWK_ENV}"
               stackhawk/hawkscan
 
-#  orb-hawkscan-remote:
-#    steps:
-#      - stackhawk/hawkscan-remote:
-#          app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
-#          env: "CircleCI"
-#          host: http://example.com
-#
-#  orb-hawkscan-local:
-#    steps:
-#      - stackhawk/hawkscan-local:
-#          host: http://nginx_test
-#          docker-network: scan_net
-#          app-id: 3d974920-42c5-4337-a9b7-fad5fc660100
-#          env: "CircleCI"
-#          steps:
-#            - run:
-#                name: Run Local Test Instance
-#                command: |
-#                  docker network create scan_net
-#                  docker run --rm --detach --network scan_net --name nginx_test nginx
-
-
 workflows:
   hawkscan-tests:
     filters:
@@ -83,11 +61,20 @@ workflows:
     jobs:
 #      - docker-hawkscan-example
 #      - machine-hawkscan-example
-#      - orb-hawkscan-local
       - orb-hawkscan-remote
       - stackhawk/hawkscan-remote:
           app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
           env: "CircleCI"
           host: http://example.com
-
+#      - stackhawk/hawkscan-local:
+#          host: http://nginx_test
+#          docker-network: scan_net
+#          app-id: 3d974920-42c5-4337-a9b7-fad5fc660100
+#          env: "CircleCI"
+#          steps:
+#            - run:
+#                name: Run Local Test Instance
+#                command: |
+#                  docker network create scan_net
+#                  docker run --rm --detach --network scan_net --name nginx_test nginx
 
