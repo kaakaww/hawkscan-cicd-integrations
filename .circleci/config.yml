@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  stackhawk: stackhawk/stackhawk@dev:alpha
+  stackhawk: stackhawk/stackhawk@1.0.2
 
 jobs:
   docker-hawkscan-example:
