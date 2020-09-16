@@ -5,12 +5,7 @@ orbs:
 
 jobs:
   docker-hawkscan-example:
-    filters:
-      branches:
-        only:
-          - main
-          - /feature\/circleci.*/
-          - /circleci.*/
+
     docker:
       - image: docker
     environment:
@@ -37,12 +32,6 @@ jobs:
               stackhawk/hawkscan:latest
 
   machine-hawkscan-example:
-    filters:
-      branches:
-        only:
-          - main
-          - /feature\/circleci.*/
-          - /circleci.*/
     machine: true
     environment:
       HAWK_APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
@@ -62,12 +51,6 @@ jobs:
               stackhawk/hawkscan
 
   orb-hawkscan-remote:
-    filters:
-      branches:
-        only:
-          - main
-          - /feature\/circleci.*/
-          - /circleci.*/
     steps:
       - stackhawk/hawkscan-remote:
           app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
@@ -75,12 +58,6 @@ jobs:
           host: http://example.com
 
   orb-hawkscan-local:
-    filters:
-      branches:
-        only:
-          - main
-          - /feature\/circleci.*/
-          - /circleci.*/
     steps:
       - stackhawk/hawkscan-local:
           host: http://nginx_test
@@ -96,10 +73,17 @@ jobs:
 
 
 workflows:
-  hawkscan-local:
+  hawkscan-tests:
+    filters:
+      branches:
+        only:
+          - main
+          - /feature\/circleci.*/
+          - /circleci.*/
     jobs:
 #      - docker-hawkscan-example
 #      - machine-hawkscan-example
 #      - orb-hawkscan-local
       - orb-hawkscan-remote
+
 
