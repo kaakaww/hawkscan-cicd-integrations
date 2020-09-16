@@ -1,0 +1,26 @@
+version: 2.1
+
+jobs:
+  build:
+    branches:
+      only:
+        - main
+        - /feature\/circleci.*/
+        - /circleci.*/
+    machine: true
+    environment:
+      HAWK_APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+      HAWK_HOST: http://example.com
+      HAWK_ENV: CircleCI
+    steps:
+      - checkout
+      - run:
+          name: Run HawkScan
+          command: >
+            docker run --volume $(pwd):/hawk --tty
+              --env API_KEY="${HAWK_API_KEY}"
+              --env NO_COLOR=true
+              --env APP_ID="${HAWK_APP_ID}
+              --env HOST="${HAWK_HOST}"
+              --env ENV=${HAWK_ENV}"
+              stackhawk/hawkscan

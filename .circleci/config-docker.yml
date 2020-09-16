@@ -1,0 +1,33 @@
+version: 2.1
+
+jobs:
+  build:
+    branches:
+      only:
+        - main
+        - /feature\/circleci.*/
+        - /circleci.*/
+    docker:
+      - image: docker
+    environment:
+      HAWK_APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+      HAWK_ENV: CircleCI
+      HAWK_HOST: http://example.com
+    steps:
+      - checkout
+      - setup_remote_docker: {}
+      - run:
+          name: Create a container with a volume to hold our HawkScan config
+          command: docker create --volume /hawk --name hawkvol alpine /bin/true
+      - run:
+          name: Copy our HawkScan config into the hawkvol container so it's available to hawkscan
+          command: docker cp . hawkvol:/hawk
+      - run:
+          name: Run HawkScan
+          command: >
+            docker run --volumes-from hawkvol --tty
+              --env API_KEY="${HAWK_API_KEY}"
+              --env ENV="${HAWK_ENV}"
+              --env APP_ID="${HAWK_APP_ID}"
+              --env NO_COLOR=true
+              stackhawk/hawkscan:latest
