@@ -55,18 +55,36 @@ workflows:
 
     jobs:
 #      - docker-hawkscan-example
-#      - machine-hawkscan-example
-      - stackhawk/hawkscan-remote:
-          app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
-          env: "CircleCI"
-          host: http://example.com
 #          filters:
 #            branches:
 #              only:
 #                - main
 #                - /feature\/circleci.*/
 #                - /circleci.*/
+#      - machine-hawkscan-example
+#          filters:
+#            branches:
+#              only:
+#                - main
+#                - /feature\/circleci.*/
+#                - /circleci.*/
+      - stackhawk/hawkscan-remote:
+          app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+          env: "CircleCI"
+          host: http://example.com
+          filters:
+            branches:
+              only:
+                - main
+                - /feature\/circleci.*/
+                - /circleci.*/
 #      - stackhawk/hawkscan-local:
+#          filters:
+#            branches:
+#              only:
+#                - main
+#                - /feature\/circleci.*/
+#                - /circleci.*/
 #          host: http://nginx_test
 #          docker-network: scan_net
 #          app-id: 3d974920-42c5-4337-a9b7-fad5fc660100
@@ -77,4 +95,4 @@ workflows:
 #                command: |
 #                  docker network create scan_net
 #                  docker run --rm --detach --network scan_net --name nginx_test nginx
-
+#
