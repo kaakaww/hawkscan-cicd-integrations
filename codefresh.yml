@@ -28,6 +28,7 @@ steps:
     type: "freestyle"
     image: "stackhawk/hawkscan"
     environment:
+      - API_KEY=${{API_KEY}}
       - APP_ID=38144eb8-5e64-482d-b2c4-786c501710ba
       - HOST=http://example.com
       - REPO_DIR=${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
