@@ -1,0 +1,98 @@
+version: 2.1
+
+orbs:
+  stackhawk: stackhawk/stackhawk@1.0.2
+
+jobs:
+  docker-hawkscan-example:
+
+    docker:
+      - image: docker
+    environment:
+      HAWK_APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+      HAWK_ENV: CircleCI
+      HAWK_HOST: http://example.com
+    steps:
+      - checkout
+      - setup_remote_docker: {}
+      - run:
+          name: Create a container with a volume to hold our HawkScan config
+          command: docker create --volume /hawk --name hawkvol alpine /bin/true
+      - run:
+          name: Copy our HawkScan config into the hawkvol container so it's available to hawkscan
+          command: docker cp . hawkvol:/hawk
+      - run:
+          name: Run HawkScan
+          command: >
+            docker run --volumes-from hawkvol --tty
+              --env API_KEY="${HAWK_API_KEY}"
+              --env ENV="${HAWK_ENV}"
+              --env APP_ID="${HAWK_APP_ID}"
+              --env NO_COLOR=true
+              stackhawk/hawkscan:latest
+
+  machine-hawkscan-example:
+    machine: true
+    environment:
+      HAWK_APP_ID: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+      HAWK_HOST: http://example.com
+      HAWK_ENV: CircleCI
+    steps:
+      - checkout
+      - run:
+          name: Run HawkScan
+          command: >
+            docker run --volume $(pwd):/hawk --tty
+              --env API_KEY="${HAWK_API_KEY}"
+              --env NO_COLOR=true
+              --env APP_ID="${HAWK_APP_ID}
+              --env HOST="${HAWK_HOST}"
+              --env ENV=${HAWK_ENV}"
+              stackhawk/hawkscan
+
+workflows:
+  hawkscan-tests:
+
+    jobs:
+#      - docker-hawkscan-example
+#          filters:
+#            branches:
+#              only:
+#                - main
+#                - /feature\/circleci.*/
+#                - /circleci.*/
+#      - machine-hawkscan-example
+#          filters:
+#            branches:
+#              only:
+#                - main
+#                - /feature\/circleci.*/
+#                - /circleci.*/
+      - stackhawk/hawkscan-remote:
+          app-id: 88d8c7dc-bd14-41e7-9e92-e87483871ea9
+          env: "CircleCI"
+          host: http://example.com
+          filters:
+            branches:
+              only:
+                - main
+                - /feature\/circleci.*/
+                - /circleci.*/
+#      - stackhawk/hawkscan-local:
+#          filters:
+#            branches:
+#              only:
+#                - main
+#                - /feature\/circleci.*/
+#                - /circleci.*/
+#          host: http://nginx_test
+#          docker-network: scan_net
+#          app-id: 3d974920-42c5-4337-a9b7-fad5fc660100
+#          env: "CircleCI"
+#          steps:
+#            - run:
+#                name: Run Local Test Instance
+#                command: |
+#                  docker network create scan_net
+#                  docker run --rm --detach --network scan_net --name nginx_test nginx
+#
