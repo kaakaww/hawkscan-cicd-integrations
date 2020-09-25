@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-web
+spec:
+  selector:
+    matchLabels:
+      app: my-app-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-app-web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-web
+spec:
+  selector:
+    app: my-app-web
+  ports:
+    - protocol: TCP
+      port: 22
