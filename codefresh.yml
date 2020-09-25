@@ -24,6 +24,12 @@ steps:
     stage: "clone"
 
   hawkscan-remote:
+    when:
+      branch:
+        only:
+          - master
+          - /^codefresh.*/i
+          - /^feature/codefresh.*/i
     title: "HawkScan Remote Test"
     type: "freestyle"
     image: "stackhawk/hawkscan"
